@@ -1,0 +1,27 @@
+name: EithonHardcore
+main: net.eithon.plugin.hardcore.Plugin
+version: 1.0
+author: vanbrayne
+description: A Minecraft plugin for hard core world additions
+depend: [EithonLibrary]
+commands:
+  hardcore:
+    description: Handle special stuff for the hardcore world
+    usage: /hardcore ban | unban | list
+    permission-message: You don't have <permission>
+permissions:
+  hardcore.*:
+    description: Gives access to all hardcore commands
+    default: op
+    hardcore.ban: true
+    hardcore.unban: true
+    hardcore.list: true
+  hardcore.ban:
+    description: Access to /hardcore ban command
+    default: op
+  hardcore.unban:
+    description: Access to /hardcore unban command
+    default: op
+  hardcore.list:
+    description: Access to /hardcore unban command
+    default: op
