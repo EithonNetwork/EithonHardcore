@@ -7,7 +7,7 @@ import java.util.UUID;
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.json.Converter;
 import net.eithon.library.json.PlayerCollection;
-import net.eithon.library.misc.Debug.DebugPrintLevel;
+import net.eithon.library.plugin.Logger.DebugPrintLevel;
 import net.eithon.library.plugin.ConfigurableCommand;
 import net.eithon.library.plugin.ConfigurableMessage;
 import net.eithon.library.plugin.Configuration;
@@ -75,7 +75,7 @@ public class Hardcore {
 	{
 		long minutesLeft = minutesLeftOfBan(player);
 		if (minutesLeft <= 0) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
 			return true;
 		}
 		if (minutesLeft < 120) {
@@ -85,7 +85,7 @@ public class Hardcore {
 			long restMinutes = minutesLeft - hoursLeft*60;
 			Hardcore.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
 		}
-		this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
+		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
 	}
 
@@ -102,10 +102,10 @@ public class Hardcore {
 
 	public boolean unban(Player player) {
 		if (!isBanned(player)) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "isBanned(%s) == false", player.getName());
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "isBanned(%s) == false", player.getName());
 			return false;
 		}
-		this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "Removing %s from bannedPlayers list.", player.getName());
+		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "Removing %s from bannedPlayers list.", player.getName());
 		this._bannedPlayers.remove(player);
 		delayedSave();
 		return true;
@@ -118,13 +118,13 @@ public class Hardcore {
 	private long minutesLeftOfBan(Player player) {
 		BannedPlayer bannedPlayer = this._bannedPlayers.get(player);
 		if (bannedPlayer == null) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "%s is not in bannedPlayers list.", player.getName());
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is not in bannedPlayers list.", player.getName());
 			return 0;
 		}
 		long minutesLeft = bannedPlayer.getMinutesLeft();
-		this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "%s has %d minutes left.", player.getName(), minutesLeft);
+		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s has %d minutes left.", player.getName(), minutesLeft);
 		if (minutesLeft <= 0) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MINOR, "%s is removed from bannedPlayers list.", player.getName());
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is removed from bannedPlayers list.", player.getName());
 			this._bannedPlayers.remove(player);
 			delayedSave();
 			return 0;
@@ -164,12 +164,12 @@ public class Hardcore {
 		File file = new File(this._eithonPlugin.getJavaPlugin().getDataFolder(), "banned.json");
 		JSONObject data = Converter.load(this._eithonPlugin, file);
 		if (data == null) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MAJOR, "The file was empty.");
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MAJOR, "The file was empty.");
 			return;			
 		}
 		JSONObject payload = (JSONObject)Converter.toBodyPayload(data);
 		if (payload == null) {
-			this._eithonPlugin.getDebug().debug(DebugPrintLevel.MAJOR, "The banned players payload was empty.");
+			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MAJOR, "The banned players payload was empty.");
 			return;
 		}
 		this._bannedPlayers.fromJson(payload);
