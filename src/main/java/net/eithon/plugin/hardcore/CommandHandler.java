@@ -5,6 +5,7 @@ import net.eithon.library.plugin.CommandParser;
 import net.eithon.library.plugin.ConfigurableMessage;
 import net.eithon.library.plugin.Configuration;
 import net.eithon.library.plugin.ICommandHandler;
+import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

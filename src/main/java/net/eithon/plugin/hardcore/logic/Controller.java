@@ -1,4 +1,4 @@
-package net.eithon.plugin.hardcore;
+package net.eithon.plugin.hardcore.logic;
 
 import java.io.File;
 import java.util.Set;

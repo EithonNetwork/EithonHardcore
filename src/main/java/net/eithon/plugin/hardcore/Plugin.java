@@ -1,6 +1,7 @@
 package net.eithon.plugin.hardcore;
 
 import net.eithon.library.extensions.EithonPlugin;
+import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.event.Listener;
 

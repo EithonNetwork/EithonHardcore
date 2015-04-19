@@ -3,6 +3,7 @@ package net.eithon.plugin.hardcore;
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.plugin.Configuration;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
+import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
