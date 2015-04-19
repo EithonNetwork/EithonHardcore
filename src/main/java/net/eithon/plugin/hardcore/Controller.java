@@ -19,8 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.json.simple.JSONObject;
 
-public class Hardcore {
-	private static Hardcore singleton = null;
+public class Controller {
 	private static ConfigurableMessage bannedUntilMessage;
 	private static ConfigurableMessage stillBannedHoursMessage;
 	private static ConfigurableMessage stillBannedMinutesMessage;
@@ -31,27 +30,16 @@ public class Hardcore {
 
 	private EithonPlugin _eithonPlugin = null;
 
-	private Hardcore() {
-	}
-
-	static Hardcore get()
-	{
-		if (singleton == null) {
-			singleton = new Hardcore();
-		}
-		return singleton;
-	}
-
-	void enable(EithonPlugin eithonPlugin){
+	public Controller(EithonPlugin eithonPlugin){
 		Configuration config = eithonPlugin.getConfiguration();
 		this._eithonPlugin = eithonPlugin;
 		this._bannedFromWorldHours = config.getInt("BannedFromWorldHours", 72);
-		Hardcore.spawnCommand = config.getConfigurableCommand("commands.TeleportToSpawn", 1,"/spawn");
-		Hardcore.bannedUntilMessage = config.getConfigurableMessage("messages.BannedUntil", 1,
+		Controller.spawnCommand = config.getConfigurableCommand("commands.TeleportToSpawn", 1,"/spawn");
+		Controller.bannedUntilMessage = config.getConfigurableMessage("messages.BannedUntil", 1,
 				"Due to dying in the hardcore world, you have now been banned from this world for %d hours.");
-		Hardcore.stillBannedHoursMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 2,
+		Controller.stillBannedHoursMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 2,
 				"Due to your earlier death in the hardcore world, you are banned for another %d hours and %d minutes.");
-		Hardcore.stillBannedMinutesMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 1,
+		Controller.stillBannedMinutesMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 1,
 				"Due to your earlier death in the hardcore world, you are banned for another %d minutes more.");
 		this._bannedPlayers = new PlayerCollection<BannedPlayer>(new BannedPlayer());
 		delayedLoad();
@@ -63,29 +51,29 @@ public class Hardcore {
 	public void playerDied(Player player)
 	{
 		int hours = ban(player);
-		Hardcore.bannedUntilMessage.sendMessage(player, hours);
+		Controller.bannedUntilMessage.sendMessage(player, hours);
 		delayedSave();
 	}
 	
 	public void gotoSpawnArea(Player player) {
-		Hardcore.spawnCommand.execute();
+		Controller.spawnCommand.execute();
 	}
 
 	public boolean canPlayerTeleport(Player player, Location from, Location to)
 	{
 		long minutesLeft = minutesLeftOfBan(player);
 		if (minutesLeft <= 0) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
 			return true;
 		}
 		if (minutesLeft < 120) {
-			Hardcore.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
+			Controller.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
 		} else {
 			long hoursLeft = minutesLeft/60;
 			long restMinutes = minutesLeft - hoursLeft*60;
-			Hardcore.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
+			Controller.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
 		}
-		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
 	}
 
@@ -102,10 +90,10 @@ public class Hardcore {
 
 	public boolean unban(Player player) {
 		if (!isBanned(player)) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "isBanned(%s) == false", player.getName());
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "isBanned(%s) == false", player.getName());
 			return false;
 		}
-		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "Removing %s from bannedPlayers list.", player.getName());
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Removing %s from bannedPlayers list.", player.getName());
 		this._bannedPlayers.remove(player);
 		delayedSave();
 		return true;
@@ -118,13 +106,13 @@ public class Hardcore {
 	private long minutesLeftOfBan(Player player) {
 		BannedPlayer bannedPlayer = this._bannedPlayers.get(player);
 		if (bannedPlayer == null) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is not in bannedPlayers list.", player.getName());
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not in bannedPlayers list.", player.getName());
 			return 0;
 		}
 		long minutesLeft = bannedPlayer.getMinutesLeft();
-		this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s has %d minutes left.", player.getName(), minutesLeft);
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s has %d minutes left.", player.getName(), minutesLeft);
 		if (minutesLeft <= 0) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MINOR, "%s is removed from bannedPlayers list.", player.getName());
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is removed from bannedPlayers list.", player.getName());
 			this._bannedPlayers.remove(player);
 			delayedSave();
 			return 0;
@@ -134,7 +122,7 @@ public class Hardcore {
 
 	private void delayedSave() {
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(this._eithonPlugin.getJavaPlugin(), new Runnable() {
+		scheduler.scheduleSyncDelayedTask(this._eithonPlugin, new Runnable() {
 			public void run() {
 				saveNow();
 			}
@@ -146,14 +134,14 @@ public class Hardcore {
 		cleanUpBannedPlayers();
 		
 		if (this._bannedPlayers == null) return;
-		File jsonFile = new File(this._eithonPlugin.getJavaPlugin().getDataFolder(), "banned.json");
+		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
 		JSONObject json = Converter.fromBody("bannedPlayers", 1, (Object) this._bannedPlayers.toJson());
 		Converter.save(jsonFile, json);
 	}
 
 	private void delayedLoad() {
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(this._eithonPlugin.getJavaPlugin(), new Runnable() {
+		scheduler.scheduleSyncDelayedTask(this._eithonPlugin, new Runnable() {
 			public void run() {
 				loadJson();
 			}
@@ -161,15 +149,15 @@ public class Hardcore {
 	}
 
 	void loadJson() {
-		File file = new File(this._eithonPlugin.getJavaPlugin().getDataFolder(), "banned.json");
+		File file = new File(this._eithonPlugin.getDataFolder(), "banned.json");
 		JSONObject data = Converter.load(this._eithonPlugin, file);
 		if (data == null) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MAJOR, "The file was empty.");
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "The file was empty.");
 			return;			
 		}
 		JSONObject payload = (JSONObject)Converter.toBodyPayload(data);
 		if (payload == null) {
-			this._eithonPlugin.getLogger().debug(DebugPrintLevel.MAJOR, "The banned players payload was empty.");
+			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "The banned players payload was empty.");
 			return;
 		}
 		this._bannedPlayers.fromJson(payload);
@@ -196,11 +184,11 @@ public class Hardcore {
 			return;
 		}
 		if (minutesLeft < 120) {
-			Hardcore.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
+			Controller.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
 		} else {
 			long hoursLeft = minutesLeft/60;
 			long restMinutes = minutesLeft - hoursLeft*60;
-			Hardcore.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
+			Controller.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
 		}
 	}
 

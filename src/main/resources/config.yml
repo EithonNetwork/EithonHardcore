@@ -25,5 +25,15 @@ messages:
   # Parameters: <minutes left> (%d)
   StillBannedMinutes: Due to your earlier death in the hardcore world, you are banned for another %d minutes more.
 
+  #
+  # Parameters: <player name> (%s) <hours> (%d)
+  PlayerBannedNow: Player %s has now been banned from the hardcore world for %d hours.
 
+  #
+  # Parameters: <player name> (%s)
+  PlayerUnbannedNow: Player %s has been unbanned from the hardcore world.
+
+  #
+  # Parameters: <player name> (%s)
+  PlayerIsNotBanned: Player %s is not banned in the hardcore world.
 

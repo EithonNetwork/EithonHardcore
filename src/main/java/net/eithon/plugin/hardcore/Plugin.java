@@ -2,31 +2,22 @@ package net.eithon.plugin.hardcore;
 
 import net.eithon.library.extensions.EithonPlugin;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Plugin extends JavaPlugin implements Listener {
+public final class Plugin extends EithonPlugin {
+	private Controller _controller;
 
 	@Override
 	public void onEnable() {
-		EithonPlugin eithonPlugin = EithonPlugin.get(this);
-		eithonPlugin.enable();
-		getServer().getPluginManager().registerEvents(new EventListener(eithonPlugin), this);
-		Hardcore.get().enable(eithonPlugin);
-		Commands.get().enable(this);
+		this._controller = new Controller(this);
+		CommandHandler commandHandler = new CommandHandler(this, this._controller);
+		Listener eventListener = new EventListener(this, this._controller);
+		super.enable(commandHandler, eventListener);
 	}
 
 	@Override
 	public void onDisable() {
-		Hardcore.get().disable();
-		Commands.get().disable();
+		super.onDisable();
+		this._controller = null;
 	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		return Commands.get().onCommand(sender, args);
-	}
-
 }
