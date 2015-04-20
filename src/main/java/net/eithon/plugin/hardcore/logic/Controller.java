@@ -8,9 +8,7 @@ import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.json.Converter;
 import net.eithon.library.json.PlayerCollection;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
-import net.eithon.library.plugin.ConfigurableCommand;
-import net.eithon.library.plugin.ConfigurableMessage;
-import net.eithon.library.plugin.Configuration;
+import net.eithon.plugin.hardcore.Config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,27 +18,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.json.simple.JSONObject;
 
 public class Controller {
-	private static ConfigurableMessage bannedUntilMessage;
-	private static ConfigurableMessage stillBannedHoursMessage;
-	private static ConfigurableMessage stillBannedMinutesMessage;
-	private static ConfigurableCommand spawnCommand;
 	private net.eithon.library.json.PlayerCollection<BannedPlayer> _bannedPlayers;
-
-	private int _bannedFromWorldHours;
-
 	private EithonPlugin _eithonPlugin = null;
 
 	public Controller(EithonPlugin eithonPlugin){
-		Configuration config = eithonPlugin.getConfiguration();
 		this._eithonPlugin = eithonPlugin;
-		this._bannedFromWorldHours = config.getInt("BannedFromWorldHours", 72);
-		Controller.spawnCommand = config.getConfigurableCommand("commands.TeleportToSpawn", 1,"/spawn");
-		Controller.bannedUntilMessage = config.getConfigurableMessage("messages.BannedUntil", 1,
-				"Due to dying in the hardcore world, you have now been banned from this world for %d hours.");
-		Controller.stillBannedHoursMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 2,
-				"Due to your earlier death in the hardcore world, you are banned for another %d hours and %d minutes.");
-		Controller.stillBannedMinutesMessage = config.getConfigurableMessage("StillBannedMinutesMessage", 1,
-				"Due to your earlier death in the hardcore world, you are banned for another %d minutes more.");
 		this._bannedPlayers = new PlayerCollection<BannedPlayer>(new BannedPlayer());
 		delayedLoad();
 	}
@@ -51,12 +33,12 @@ public class Controller {
 	public void playerDied(Player player)
 	{
 		int hours = ban(player);
-		Controller.bannedUntilMessage.sendMessage(player, hours);
+		Config.M.bannedUntilMessage.sendMessage(player, hours);
 		delayedSave();
 	}
 	
 	public void gotoSpawnArea(Player player) {
-		Controller.spawnCommand.execute();
+		Config.C.spawnCommand.execute();
 	}
 
 	public boolean canPlayerTeleport(Player player, Location from, Location to)
@@ -67,11 +49,11 @@ public class Controller {
 			return true;
 		}
 		if (minutesLeft < 120) {
-			Controller.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
+			Config.M.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
 		} else {
 			long hoursLeft = minutesLeft/60;
 			long restMinutes = minutesLeft - hoursLeft*60;
-			Controller.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
+			Config.M.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
 		}
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
@@ -82,7 +64,7 @@ public class Controller {
 	}
 
 	public int ban(Player player, int bannedHours) {
-		if (bannedHours <= 0) bannedHours = this._bannedFromWorldHours;
+		if (bannedHours <= 0) bannedHours = Config.V._bannedFromWorldHours;
 		this._bannedPlayers.put(player, new BannedPlayer(player, bannedHours));
 		delayedSave();
 		return bannedHours;
@@ -184,11 +166,11 @@ public class Controller {
 			return;
 		}
 		if (minutesLeft < 120) {
-			Controller.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
+			Config.M.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
 		} else {
 			long hoursLeft = minutesLeft/60;
 			long restMinutes = minutesLeft - hoursLeft*60;
-			Controller.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
+			Config.M.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
 		}
 	}
 
