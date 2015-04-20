@@ -14,15 +14,12 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public final class EventListener implements Listener {
-	private static String hardCoreWorldName;
 	private EithonPlugin _eithonPlugin;
 	private Controller _controller;
 
 	public EventListener(EithonPlugin eithonPlugin, Controller controller) {
 		this._controller = controller;
 		this._eithonPlugin = eithonPlugin;
-		Configuration config = eithonPlugin.getConfiguration();
-		hardCoreWorldName = config.getString("HardcoreWorldName", "");	
 	}
 
 	@EventHandler
@@ -63,9 +60,10 @@ public final class EventListener implements Listener {
 	}
 
 	private boolean isInHardcoreWorld(World world) {
-		if (hardCoreWorldName == null) return false;
-		if (hardCoreWorldName.isEmpty()) return false;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "World: \"%s\", hardcore=\"%s\".", world.getName(), hardCoreWorldName);
-		return world.getName().equalsIgnoreCase(hardCoreWorldName);
+		if (Config.V.hardCoreWorldName == null) return false;
+		if (Config.V.hardCoreWorldName.isEmpty()) return false;
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "World: \"%s\", hardcore=\"%s\".", 
+				world.getName(), Config.V.hardCoreWorldName);
+		return world.getName().equalsIgnoreCase(Config.V.hardCoreWorldName);
 	}
 }

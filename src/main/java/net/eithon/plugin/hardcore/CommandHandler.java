@@ -15,20 +15,11 @@ public class CommandHandler implements ICommandHandler {
 	private static final String UNBAN_COMMAND = "/hardcore unban <player>";
 	private static final String LIST_COMMAND = "/hardcore list";
 	
-	private static ConfigurableMessage playerBannedNowMessage;	
-	private static ConfigurableMessage playerUnbannedNowMessage;	
-	private static ConfigurableMessage playerIsNotBannedMessage;
 	private Controller _controller;
 
 	public CommandHandler(EithonPlugin eithonPlugin, Controller controller) {
 		this._controller = controller;
 		Configuration config = eithonPlugin.getConfiguration();
-		playerBannedNowMessage = config.getConfigurableMessage("PlayerBannedNowe", 2,
-				"Player %s has now been banned from the hardcore world for %d hours.");
-		playerUnbannedNowMessage = config.getConfigurableMessage("PlayerUnbannedNow", 1,
-				"Player %s has been unbanned from the hardcore world.");
-		playerIsNotBannedMessage = config.getConfigurableMessage("PlayerIsNotBanned", 1,
-				"Player %s is not banned in the hardcore world.");
 	}
 	
 	public boolean onCommand(CommandParser commandParser) {
@@ -56,7 +47,7 @@ public class CommandHandler implements ICommandHandler {
 		int hours = commandParser.getArgumentInteger(2, 0);
 
 		hours = this._controller.ban(player, hours);
-		CommandHandler.playerBannedNowMessage.sendMessage(commandParser.getSender(), player.getName(), hours);
+		Config.M.playerBannedNow.sendMessage(commandParser.getSender(), player.getName(), hours);
 	}
 
 
@@ -75,9 +66,9 @@ public class CommandHandler implements ICommandHandler {
 		boolean wasReallyUnbanned = this._controller.unban(player);
 
 		if (wasReallyUnbanned) {
-			CommandHandler.playerUnbannedNowMessage.sendMessage(commandParser.getSender(), player.getName());
+			Config.M.playerUnbannedNow.sendMessage(commandParser.getSender(), player.getName());
 		} else {
-			CommandHandler.playerIsNotBannedMessage.sendMessage(commandParser.getSender(), player.getName());
+			Config.M.playerIsNotBanned.sendMessage(commandParser.getSender(), player.getName());
 		}
 	}
 
