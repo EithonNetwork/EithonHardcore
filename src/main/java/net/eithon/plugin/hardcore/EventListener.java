@@ -24,46 +24,63 @@ public final class EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerTeleportEvent(PlayerTeleportEvent event) {
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Enter onPlayerTeleportEvent()");
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return now if event was cancelled.");
-		if (event.isCancelled()) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return now if not in hardcore world.");
-		if (!isInHardcoreWorld(event.getTo().getWorld())) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return if player can teleport.");
+		debug("onPlayerTeleportEvent", "Enter");
+		if (event.isCancelled()) {
+			debug("onPlayerTeleportEvent", "Event was already cancelled. Return.");
+			return;
+		}
+		if (!isInHardcoreWorld(event.getTo().getWorld())) {
+			debug("onPlayerTeleportEvent", "Not in a hardcore world. Return.");
+			return;
+		}
 		boolean canTeleport = this._controller.canPlayerTeleport(event.getPlayer(), event.getFrom(), event.getTo());
-		if (canTeleport) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "Cancel this teleport event.");
+		if (canTeleport) {
+			debug("onPlayerTeleportEvent", "Player can teleport. Return.");
+			return;
+		}
+		debug("onPlayerTeleportEvent", "Cancel this teleport event. Return.");
 		event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Enter onPlayerDeathEvent()");
+		debug("onPlayerDeathEvent", "Enter");
 		Player player = event.getEntity();
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return now if not in hardcore world.");
-		if (!isInHardcoreWorld(player.getWorld())) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "Ban this player.");
+		if (!isInHardcoreWorld(player.getWorld())) {
+			debug("onPlayerDeathEvent", "Not in a hardcore world. Return.");
+			return;
+		}
+		debug("onPlayerDeathEvent", "Ban this player. Return.");
 		this._controller.playerDied(player);
 	}
 
 	@EventHandler
 	public void onPlayerRespawnEvent(PlayerRespawnEvent event) {
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Enter onPlayerRespawnEvent()");
+		debug("onPlayerRespawnEvent", "Enter");
 		Player player = event.getPlayer();
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return now if not in hardcore world.");
-		if (!isInHardcoreWorld(player.getWorld())) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Return if player is not banned.");
+		if (!isInHardcoreWorld(player.getWorld())) {
+			debug("onPlayerRespawnEvent", "Not in a hardcore world. Return.");
+			return;
+		}
 		boolean isBanned = this._controller.isBanned(event.getPlayer());
-		if (!isBanned) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Send player to spawn area");
+		if (!isBanned) {
+			debug("onPlayerRespawnEvent", "Player is still banned. Return.");
+			return;
+		}
+		debug("onPlayerRespawnEvent", "Send player to spawn area. Return.");
 		this._controller.gotoSpawnArea(player);
 	}
 
 	private boolean isInHardcoreWorld(World world) {
 		if (Config.V.hardCoreWorldName == null) return false;
 		if (Config.V.hardCoreWorldName.isEmpty()) return false;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "World: \"%s\", hardcore=\"%s\".", 
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.VERBOSE, "World = \"%s\", hardcore=\"%s\".", 
 				world.getName(), Config.V.hardCoreWorldName);
 		return world.getName().equalsIgnoreCase(Config.V.hardCoreWorldName);
+	}
+
+	private void debug(String method, String message) {
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.VERBOSE, "%s: %s", method, message);
 	}
 }
