@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.eithon.library.extensions.EithonPlugin;
-import net.eithon.library.json.Converter;
+import net.eithon.library.json.FileContent;
 import net.eithon.library.json.PlayerCollection;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
 import net.eithon.plugin.hardcore.Config;
@@ -15,7 +15,6 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.json.simple.JSONObject;
 
 public class Controller {
 	private net.eithon.library.json.PlayerCollection<BannedPlayer> _bannedPlayers;
@@ -117,8 +116,8 @@ public class Controller {
 		
 		if (this._bannedPlayers == null) return;
 		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
-		JSONObject json = Converter.fromBody("bannedPlayers", 1, (Object) this._bannedPlayers.toJson());
-		Converter.save(jsonFile, json);
+		FileContent fileContent = new FileContent("bannedPlayers", 1, this._bannedPlayers.toJson());
+		fileContent.save(jsonFile);
 	}
 
 	private void delayedLoad() {
@@ -132,17 +131,12 @@ public class Controller {
 
 	void loadJson() {
 		File file = new File(this._eithonPlugin.getDataFolder(), "banned.json");
-		JSONObject data = Converter.load(this._eithonPlugin, file);
-		if (data == null) {
+		FileContent fileContent = FileContent.loadFromFile(file);
+		if (fileContent == null) {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "The file was empty.");
 			return;			
 		}
-		JSONObject payload = (JSONObject)Converter.toBodyPayload(data);
-		if (payload == null) {
-			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "The banned players payload was empty.");
-			return;
-		}
-		this._bannedPlayers.fromJson(payload);
+		this._bannedPlayers.fromJson(fileContent.getPayload());
 	}
 
 	public void list(CommandSender sender) {
