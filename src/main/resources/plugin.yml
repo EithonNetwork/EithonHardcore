@@ -5,9 +5,9 @@ author: vanbrayne
 description: A Minecraft plugin for hard core world additions
 depend: [EithonLibrary]
 commands:
-  hardcore:
+  ehardcore:
     description: Handle special stuff for the hardcore world
-    usage: /hardcore ban | unban | list
+    usage: /ehardcore ban | unban | list
     permission-message: You don't have <permission>
 permissions:
   hardcore.*:
@@ -17,11 +17,11 @@ permissions:
     hardcore.unban: true
     hardcore.list: true
   hardcore.ban:
-    description: Access to /hardcore ban command
+    description: Access to /ehardcore ban command
     default: op
   hardcore.unban:
-    description: Access to /hardcore unban command
+    description: Access to /ehardcore unban command
     default: op
   hardcore.list:
-    description: Access to /hardcore unban command
+    description: Access to /ehardcore list command
     default: op

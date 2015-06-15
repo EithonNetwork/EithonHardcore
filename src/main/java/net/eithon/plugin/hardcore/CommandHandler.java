@@ -9,9 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements ICommandHandler {
-	private static final String BAN_COMMAND = "/hardcore ban <player> [<hours>]";
-	private static final String UNBAN_COMMAND = "/hardcore unban <player>";
-	private static final String LIST_COMMAND = "/hardcore list";
+	private static final String BAN_COMMAND = "/ehardcore ban <player> [<hours>]";
+	private static final String UNBAN_COMMAND = "/ehardcore unban <player>";
+	private static final String LIST_COMMAND = "/ehardcore list";
 	
 	private Controller _controller;
 
