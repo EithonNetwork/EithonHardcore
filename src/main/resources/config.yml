@@ -18,7 +18,7 @@ commands:
 
   #
   # Parameters: -
-  TeleportToSpawn: /spawn
+  TeleportToSpawn: spawn
 
 messages:
 
