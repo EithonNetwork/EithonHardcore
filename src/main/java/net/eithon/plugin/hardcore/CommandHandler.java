@@ -2,8 +2,6 @@ package net.eithon.plugin.hardcore;
 
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.plugin.CommandParser;
-import net.eithon.library.plugin.ConfigurableMessage;
-import net.eithon.library.plugin.Configuration;
 import net.eithon.library.plugin.ICommandHandler;
 import net.eithon.plugin.hardcore.logic.Controller;
 
@@ -11,21 +9,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements ICommandHandler {
-	private static final String BAN_COMMAND = "/hardcore ban <player> [<hours>]";
-	private static final String UNBAN_COMMAND = "/hardcore unban <player>";
-	private static final String LIST_COMMAND = "/hardcore list";
+	private static final String BAN_COMMAND = "/ehardcore ban <player> [<hours>]";
+	private static final String UNBAN_COMMAND = "/ehardcore unban <player>";
+	private static final String LIST_COMMAND = "/ehardcore list";
 	
 	private Controller _controller;
 
 	public CommandHandler(EithonPlugin eithonPlugin, Controller controller) {
 		this._controller = controller;
-		Configuration config = eithonPlugin.getConfiguration();
 	}
 	
 	public boolean onCommand(CommandParser commandParser) {
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(1,1)) return true;
 
-		String command = commandParser.getArgumentStringAsLowercase(0);
+		String command = commandParser.getArgumentCommand();
 		if (command.equals("ban")) {
 			banCommand(commandParser);
 		} else if (command.equals("unban")) {
@@ -43,8 +40,8 @@ public class CommandHandler implements ICommandHandler {
 		if (!commandParser.hasPermissionOrInformSender("hardcore.ban")) return;
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(2, 3)) return;
 
-		Player player = commandParser.getArgumentPlayer(1, null);
-		int hours = commandParser.getArgumentInteger(2, 0);
+		Player player = commandParser.getArgumentPlayer(null);
+		int hours = commandParser.getArgumentInteger(0);
 
 		hours = this._controller.ban(player, hours);
 		Config.M.playerBannedNow.sendMessage(commandParser.getSender(), player.getName(), hours);
@@ -62,7 +59,7 @@ public class CommandHandler implements ICommandHandler {
 		if (!commandParser.hasPermissionOrInformSender("hardcore.unban")) return;
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(2, 2)) return;
 
-		Player player = commandParser.getArgumentPlayer(1, null);
+		Player player = commandParser.getArgumentPlayer(null);
 		boolean wasReallyUnbanned = this._controller.unban(player);
 
 		if (wasReallyUnbanned) {
