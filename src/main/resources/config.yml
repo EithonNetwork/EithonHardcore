@@ -3,16 +3,20 @@
 HardcoreWorldName: W_Hardcore
 #
 # The number of hours that a player is banned when he/she has died in the hardcore world
-BannedFromWorldHours: 1
+BannedFromWorldHours: 72
 
-#
-# Debug level
-#	0 = NONE (no debug messages)
-#	1 = MAJOR (only major messages)
-#	2 = MINOR (also minor messages)
-#	3 = VERBOSE (all messages)
-#
-EithonDebugLevel: 1
+eithon:
+  UseMarkUpForMessages: 0
+  UseWrappingForMessages: 0
+  
+  #
+  # Debug level
+  #  0 = NONE (no debug messages)
+  #  1 = MAJOR (only major messages)
+  #  2 = MINOR (also minor messages)
+  #  3 = VERBOSE (all messages)
+  #
+  EithonDebugLevel: 1
 
 commands:
 
@@ -45,4 +49,3 @@ messages:
   #
   # Parameters: <player name> (%s)
   PlayerIsNotBanned: Player %s is not banned in the hardcore world.
-
