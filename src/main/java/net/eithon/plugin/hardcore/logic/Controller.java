@@ -130,6 +130,7 @@ public class Controller {
 		cleanUpBannedPlayers();
 		
 		if (this._bannedPlayers == null) return;
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Saving %d banned players.", this._bannedPlayers.size());
 		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
 		FileContent fileContent = new FileContent("bannedPlayers", 1, this._bannedPlayers.toJson());
 		fileContent.save(jsonFile);
