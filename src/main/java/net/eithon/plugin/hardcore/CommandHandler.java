@@ -22,6 +22,8 @@ public class CommandHandler implements ICommandHandler {
 	
 	public boolean onCommand(CommandParser commandParser) {
 		String command = commandParser.getArgumentCommand();
+		if (command == null) return false;
+		
 		if (command.equals("ban")) {
 			banCommand(commandParser);
 		} else if (command.equals("unban")) {

@@ -6,6 +6,7 @@ A Hardcore plugin for Minecraft.
 
 ### 1.1 (2015-07-08)
 
+* CHANGE: Now shows subcommands if no subcommand was given.
 * BUG: Player name was missing in list command.
 * BUG: Command name not changed in plugin.yml
 * BUG: Banned players were not saved.
