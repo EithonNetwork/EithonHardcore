@@ -13,9 +13,9 @@ permissions:
   ehardcore.*:
     description: Gives access to all hardcore commands
     default: op
-    hardcore.ban: true
-    hardcore.unban: true
-    hardcore.list: true
+    ehardcore.ban: true
+    ehardcore.unban: true
+    ehardcore.list: true
   ehardcore.ban:
     description: Access to /ehardcore ban command
     default: op
