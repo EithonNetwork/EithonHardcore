@@ -9,6 +9,7 @@ import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.json.FileContent;
 import net.eithon.library.json.PlayerCollection;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
+import net.eithon.library.time.TimeMisc;
 import net.eithon.plugin.hardcore.Config;
 
 import org.bukkit.Bukkit;
@@ -41,7 +42,7 @@ public class Controller {
 		Config.M.bannedUntilMessage.sendMessage(player, hours);
 		delayedSave();
 	}
-	
+
 	public void gotoSpawnArea(Player player) {
 		Config.C.spawnCommand.execute();
 	}
@@ -58,13 +59,7 @@ public class Controller {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
 			return true;
 		}
-		if (minutesLeft < 120) {
-			Config.M.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
-		} else {
-			long hoursLeft = minutesLeft/60;
-			long restMinutes = minutesLeft - hoursLeft*60;
-			Config.M.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
-		}
+		Config.M.stillBanned.sendMessage(player, player.getName(), TimeMisc.minutesToString(minutesLeft, true));
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
 	}
@@ -128,7 +123,7 @@ public class Controller {
 	void saveNow()
 	{
 		cleanUpBannedPlayers();
-		
+
 		if (this._bannedPlayers == null) return;
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Saving %d banned players.", this._bannedPlayers.size());
 		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
@@ -175,13 +170,7 @@ public class Controller {
 			sender.sendMessage(String.format("%s is allowed to teleport to the hardcore world.", bannedPlayer.getName()));
 			return;
 		}
-		if (minutesLeft < 120) {
-			Config.M.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
-		} else {
-			long hoursLeft = minutesLeft/60;
-			long restMinutes = minutesLeft - hoursLeft*60;
-			Config.M.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
-		}
+		Config.M.stillBanned.sendMessage(sender, bannedPlayer.getName(), TimeMisc.minutesToString(minutesLeft, true));
 	}
 
 

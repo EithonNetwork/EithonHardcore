@@ -37,11 +37,10 @@ public class Config {
 		public static ConfigurableMessage playerUnbannedNow;	
 		public static ConfigurableMessage playerIsNotBanned;
 		public static ConfigurableMessage bannedUntilMessage;
-		public static ConfigurableMessage stillBannedHoursMessage;
-		public static ConfigurableMessage stillBannedMinutesMessage;
+		public static ConfigurableMessage stillBanned;
 
 		static void load(Configuration config) {
-			playerBannedNow = config.getConfigurableMessage("PlayerBannedNowe", 2,
+			playerBannedNow = config.getConfigurableMessage("PlayerBannedNow", 2,
 					"Player %s has now been banned from the hardcore world for %d hours.");
 			playerUnbannedNow = config.getConfigurableMessage("PlayerUnbannedNow", 1,
 					"Player %s has been unbanned from the hardcore world.");
@@ -49,10 +48,8 @@ public class Config {
 					"Player %s is not banned in the hardcore world.");
 			bannedUntilMessage = config.getConfigurableMessage("messages.BannedUntil", 1,
 					"Due to dying in the hardcore world, you have now been banned from this world for %d hours.");
-			stillBannedHoursMessage = config.getConfigurableMessage("messages.StillBannedHours", 2,
-					"Due to your earlier death in the hardcore world, you are banned for another %d hours and %d minutes.");
-			stillBannedMinutesMessage = config.getConfigurableMessage("messages.StillBannedMinutes", 1,
-					"Due to your earlier death in the hardcore world, you are banned for another %d minutes more.");
+			stillBanned = config.getConfigurableMessage("messages.StillBanned", 2,
+					"Player %s is banned %s.");
 		}		
 	}
 
