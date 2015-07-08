@@ -7,6 +7,8 @@ A Hardcore plugin for Minecraft.
 ### 1.1 (2015-07-08)
 
 * BUG: Command name not changed in plugin.yml
+* BUG: Banned players were not saved.
+* BUG: All commands was expected to have 1 argument.
 
 ### 1.0 (2015-04-03)
 

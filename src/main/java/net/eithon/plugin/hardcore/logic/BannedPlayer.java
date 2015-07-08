@@ -43,7 +43,7 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 		JSONObject json = new JSONObject();
 		json.put("player", this._player.toJson());
 		json.put("bannedToTime", this._bannedToTime.toString());
-		return null;
+		return json;
 	}
 	
 	@Override
