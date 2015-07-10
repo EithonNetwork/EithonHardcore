@@ -1,5 +1,6 @@
 package net.eithon.plugin.hardcore;
 
+import net.eithon.library.extensions.EithonPlayer;
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.plugin.CommandParser;
 import net.eithon.library.plugin.ICommandHandler;
@@ -20,9 +21,9 @@ public class CommandHandler implements ICommandHandler {
 	}
 	
 	public boolean onCommand(CommandParser commandParser) {
-		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(1,1)) return true;
-
 		String command = commandParser.getArgumentCommand();
+		if (command == null) return false;
+		
 		if (command.equals("ban")) {
 			banCommand(commandParser);
 		} else if (command.equals("unban")) {
@@ -40,7 +41,7 @@ public class CommandHandler implements ICommandHandler {
 		if (!commandParser.hasPermissionOrInformSender("hardcore.ban")) return;
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(2, 3)) return;
 
-		Player player = commandParser.getArgumentPlayer(null);
+		EithonPlayer player = commandParser.getArgumentEithonPlayer(commandParser.getPlayer());
 		int hours = commandParser.getArgumentInteger(0);
 
 		hours = this._controller.ban(player, hours);
@@ -59,7 +60,7 @@ public class CommandHandler implements ICommandHandler {
 		if (!commandParser.hasPermissionOrInformSender("hardcore.unban")) return;
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(2, 2)) return;
 
-		Player player = commandParser.getArgumentPlayer(null);
+		EithonPlayer player = commandParser.getArgumentEithonPlayer(commandParser.getPlayer());
 		boolean wasReallyUnbanned = this._controller.unban(player);
 
 		if (wasReallyUnbanned) {

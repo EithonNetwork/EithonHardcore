@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.Set;
 import java.util.UUID;
 
+import net.eithon.library.extensions.EithonPlayer;
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.json.FileContent;
 import net.eithon.library.json.PlayerCollection;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
+import net.eithon.library.time.TimeMisc;
 import net.eithon.plugin.hardcore.Config;
 
 import org.bukkit.Bukkit;
@@ -31,45 +33,49 @@ public class Controller {
 
 	public void playerDied(Player player)
 	{
+		playerDied(new EithonPlayer(player));
+	}
+
+	private void playerDied(EithonPlayer player)
+	{
 		int hours = ban(player);
 		Config.M.bannedUntilMessage.sendMessage(player, hours);
 		delayedSave();
 	}
-	
+
 	public void gotoSpawnArea(Player player) {
 		Config.C.spawnCommand.execute();
 	}
 
 	public boolean canPlayerTeleport(Player player, Location from, Location to)
 	{
+		return canPlayerTeleport(new EithonPlayer(player), from, to);
+	}
+
+	private boolean canPlayerTeleport(EithonPlayer player, Location from, Location to)
+	{
 		long minutesLeft = minutesLeftOfBan(player);
 		if (minutesLeft <= 0) {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
 			return true;
 		}
-		if (minutesLeft < 120) {
-			Config.M.stillBannedMinutesMessage.sendMessage(player, minutesLeft);
-		} else {
-			long hoursLeft = minutesLeft/60;
-			long restMinutes = minutesLeft - hoursLeft*60;
-			Config.M.stillBannedHoursMessage.sendMessage(player, hoursLeft, restMinutes);
-		}
+		Config.M.stillBanned.sendMessage(player, player.getName(), TimeMisc.minutesToString(minutesLeft, true));
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
 	}
 
-	public int ban(Player player) {
+	public int ban(EithonPlayer player) {
 		return ban(player, 0);
 	}
 
-	public int ban(Player player, int bannedHours) {
+	public int ban(EithonPlayer eithonPlayer, int bannedHours) {
 		if (bannedHours <= 0) bannedHours = Config.V._bannedFromWorldHours;
-		this._bannedPlayers.put(player, new BannedPlayer(player, bannedHours));
+		this._bannedPlayers.put(eithonPlayer, new BannedPlayer(eithonPlayer, bannedHours));
 		delayedSave();
 		return bannedHours;
 	}
 
-	public boolean unban(Player player) {
+	public boolean unban(EithonPlayer player) {
 		if (!isBanned(player)) {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "isBanned(%s) == false", player.getName());
 			return false;
@@ -81,10 +87,14 @@ public class Controller {
 	}
 
 	public boolean isBanned(Player player) {
+		return isBanned(new EithonPlayer(player));
+	}
+
+	private boolean isBanned(EithonPlayer player) {
 		return minutesLeftOfBan(player) > 0;
 	}
 
-	private long minutesLeftOfBan(Player player) {
+	private long minutesLeftOfBan(EithonPlayer player) {
 		BannedPlayer bannedPlayer = this._bannedPlayers.get(player);
 		if (bannedPlayer == null) {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not in bannedPlayers list.", player.getName());
@@ -113,8 +123,9 @@ public class Controller {
 	void saveNow()
 	{
 		cleanUpBannedPlayers();
-		
+
 		if (this._bannedPlayers == null) return;
+		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Saving %d banned players.", this._bannedPlayers.size());
 		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
 		FileContent fileContent = new FileContent("bannedPlayers", 1, this._bannedPlayers.toJson());
 		fileContent.save(jsonFile);
@@ -159,13 +170,7 @@ public class Controller {
 			sender.sendMessage(String.format("%s is allowed to teleport to the hardcore world.", bannedPlayer.getName()));
 			return;
 		}
-		if (minutesLeft < 120) {
-			Config.M.stillBannedMinutesMessage.sendMessage(sender, minutesLeft);
-		} else {
-			long hoursLeft = minutesLeft/60;
-			long restMinutes = minutesLeft - hoursLeft*60;
-			Config.M.stillBannedHoursMessage.sendMessage(sender, hoursLeft, restMinutes);
-		}
+		Config.M.stillBanned.sendMessage(sender, bannedPlayer.getName(), TimeMisc.minutesToString(minutesLeft, true));
 	}
 
 

@@ -9,7 +9,6 @@ import net.eithon.library.core.IUuidAndName;
 import net.eithon.library.extensions.EithonPlayer;
 import net.eithon.library.json.IJson;
 
-import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 
 public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAndName
@@ -18,8 +17,8 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 	EithonPlayer _player;
 	private LocalDateTime _bannedToTime;
 
-	public BannedPlayer(Player player, int bannedHours) {
-		this._player = new EithonPlayer(player);
+	public BannedPlayer(EithonPlayer eithonPlayer, int bannedHours) {
+		this._player = eithonPlayer;
 		this._bannedToTime = LocalDateTime.now().plusHours(bannedHours);
 	}
 
@@ -44,7 +43,7 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 		JSONObject json = new JSONObject();
 		json.put("player", this._player.toJson());
 		json.put("bannedToTime", this._bannedToTime.toString());
-		return null;
+		return json;
 	}
 	
 	@Override
