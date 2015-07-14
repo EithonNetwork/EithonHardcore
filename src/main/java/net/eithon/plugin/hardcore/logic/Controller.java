@@ -59,7 +59,7 @@ public class Controller {
 			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is allowed to teleport", player.getName());
 			return true;
 		}
-		Config.M.stillBanned.sendMessage(player, player.getName(), TimeMisc.minutesToString(minutesLeft, true));
+		Config.M.stillBanned.sendMessage(player, player.getName(), TimeMisc.minutesToString(minutesLeft, false));
 		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "%s is not allowed to teleport", player.getName());
 		return false;
 	}

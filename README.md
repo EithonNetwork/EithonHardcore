@@ -4,7 +4,7 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
-### 1.1.1 (2015-07-24)
+### 1.1.2 (2015-07-14)
 
 * BUG: Ban time was shown in days, should be shown in HH:MM:SS format.
 
