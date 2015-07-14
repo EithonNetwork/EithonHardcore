@@ -49,7 +49,7 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 	@Override
 	public BannedPlayer fromJson(Object json) {
 		JSONObject jsonObject = (JSONObject) json;
-		this._player = EithonPlayer.getFromJSon(jsonObject.get("player"));
+		this._player = EithonPlayer.getFromJson(jsonObject.get("player"));
 		this._bannedToTime = LocalDateTime.parse((String) jsonObject.get("bannedToTime"));
 		return this;
 	}

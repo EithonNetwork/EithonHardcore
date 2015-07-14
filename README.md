@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 1.1.1 (2015-07-24)
+
+* BUG: Ban time was shown in days, should be shown in HH:MM:SS format.
+
 ### 1.1 (2015-07-08)
 
 * CHANGE: Now shows subcommands if no subcommand was given.

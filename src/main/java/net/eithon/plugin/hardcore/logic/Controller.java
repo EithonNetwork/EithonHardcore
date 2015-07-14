@@ -170,7 +170,7 @@ public class Controller {
 			sender.sendMessage(String.format("%s is allowed to teleport to the hardcore world.", bannedPlayer.getName()));
 			return;
 		}
-		Config.M.stillBanned.sendMessage(sender, bannedPlayer.getName(), TimeMisc.minutesToString(minutesLeft, true));
+		Config.M.stillBanned.sendMessage(sender, bannedPlayer.getName(), TimeMisc.minutesToString(minutesLeft, false));
 	}
 
 
