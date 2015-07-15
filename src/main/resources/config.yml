@@ -31,7 +31,7 @@ messages:
   BannedUntil: Due to dying in the hardcore world, you have now been banned from this world for %d hours.
 
   #
-  # Parameters: <player name>(%s) <hours left> (%d), <time left> (%s)
+  # Parameters: <player name>(%s) <time left> (%s)
   StillBanned: Player %s is banned %s.
 
   #
