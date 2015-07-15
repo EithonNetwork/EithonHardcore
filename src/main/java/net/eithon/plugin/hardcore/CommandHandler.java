@@ -7,7 +7,6 @@ import net.eithon.library.plugin.ICommandHandler;
 import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandHandler implements ICommandHandler {
 	private static final String BAN_COMMAND = "/ehardcore ban <player> [<hours>]";
