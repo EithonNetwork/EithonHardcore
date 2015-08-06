@@ -2,8 +2,8 @@
 # The name of the hardcore world
 HardcoreWorldName: W_Hardcore
 #
-# The number of hours that a player is banned when he/she has died in the hardcore world
-BannedFromWorldHours: 72
+# The time span that a player is banned when he/she has died in the hardcore world
+bannedFromWorldTimeSpan: 72h
 
 eithon:
   UseMarkUpForMessages: 0
@@ -27,16 +27,16 @@ commands:
 messages:
 
   #
-  # Parameters: <banned for hours> (%d)
-  BannedUntil: Due to dying in the hardcore world, you have now been banned from this world for %d hours.
+  # Parameters: <banned time span> (%s)
+  BannedUntil: Due to dying in the hardcore world, you have now been banned from this world for %s.
 
   #
-  # Parameters: <player name>(%s) <time left> (%s)
+  # Parameters: <player name>(%s) <time span left> (%s)
   StillBanned: Player %s is banned %s.
 
   #
-  # Parameters: <player name> (%s) <hours> (%d)
-  PlayerBannedNow: Player %s has now been banned from the hardcore world for %d hours.
+  # Parameters: <player name> (%s) <time span> (%s)
+  PlayerBannedNow: Player %s has now been banned from the hardcore world for %s.
 
   #
   # Parameters: <player name> (%s)

@@ -38,8 +38,8 @@ public class Controller {
 
 	private void playerDied(EithonPlayer player)
 	{
-		int hours = ban(player);
-		Config.M.bannedUntilMessage.sendMessage(player, hours);
+		long seconds = ban(player, Config.V.bannedFromWorldSeconds);
+		Config.M.bannedUntilMessage.sendMessage(player, TimeMisc.secondsToString(seconds));
 		delayedSave();
 	}
 
@@ -64,15 +64,10 @@ public class Controller {
 		return false;
 	}
 
-	public int ban(EithonPlayer player) {
-		return ban(player, 0);
-	}
-
-	public int ban(EithonPlayer eithonPlayer, int bannedHours) {
-		if (bannedHours <= 0) bannedHours = Config.V._bannedFromWorldHours;
-		this._bannedPlayers.put(eithonPlayer, new BannedPlayer(eithonPlayer, bannedHours));
+	public long ban(EithonPlayer eithonPlayer, long bannedSeconds) {
+		this._bannedPlayers.put(eithonPlayer, new BannedPlayer(eithonPlayer, bannedSeconds));
 		delayedSave();
-		return bannedHours;
+		return bannedSeconds;
 	}
 
 	public boolean unban(EithonPlayer player) {
