@@ -25,7 +25,7 @@ public class Controller {
 	public Controller(EithonPlugin eithonPlugin){
 		this._eithonPlugin = eithonPlugin;
 		this._bannedPlayers = new PlayerCollection<BannedPlayer>(new BannedPlayer());
-		delayedLoad();
+		delayedLoad(eithonPlugin);
 	}
 
 	void disable() {
@@ -105,46 +105,7 @@ public class Controller {
 		}
 		return minutesLeft;
 	}
-
-	private void delayedSave() {
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(this._eithonPlugin, new Runnable() {
-			public void run() {
-				saveNow();
-			}
-		});
-	}
-
-	void saveNow()
-	{
-		cleanUpBannedPlayers();
-
-		if (this._bannedPlayers == null) return;
-		this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MINOR, "Saving %d banned players.", this._bannedPlayers.size());
-		File jsonFile = new File(this._eithonPlugin.getDataFolder(), "banned.json");
-		FileContent fileContent = new FileContent("bannedPlayers", 1, this._bannedPlayers.toJson());
-		fileContent.save(jsonFile);
-	}
-
-	private void delayedLoad() {
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncDelayedTask(this._eithonPlugin, new Runnable() {
-			public void run() {
-				loadJson();
-			}
-		}, 200L);
-	}
-
-	void loadJson() {
-		File file = new File(this._eithonPlugin.getDataFolder(), "banned.json");
-		FileContent fileContent = FileContent.loadFromFile(file);
-		if (fileContent == null) {
-			this._eithonPlugin.getEithonLogger().debug(DebugPrintLevel.MAJOR, "The file was empty.");
-			return;			
-		}
-		this._bannedPlayers.fromJson(fileContent.getPayload());
-	}
-
+	
 	public void list(CommandSender sender) {
 		cleanUpBannedPlayers();
 		Set<UUID> players = this._bannedPlayers.getPlayers();
@@ -175,5 +136,15 @@ public class Controller {
 			BannedPlayer bannedPlayer = this._bannedPlayers.get(playerId);
 			if (bannedPlayer.getMinutesLeft() <= 1) this._bannedPlayers.remove(playerId);
 		}
+	}
+
+	private void delayedSave() {
+		cleanUpBannedPlayers();	
+		this._bannedPlayers.delayedSave(this._eithonPlugin, "banned.json", "BannedPlayers", 0);
+	}
+
+	private void delayedLoad(EithonPlugin eithonPlugin) {
+		this._bannedPlayers.delayedLoad(eithonPlugin, "banned.json", 0);
+		cleanUpBannedPlayers();	
 	}
 }
