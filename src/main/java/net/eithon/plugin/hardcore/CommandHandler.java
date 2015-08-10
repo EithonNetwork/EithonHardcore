@@ -4,6 +4,7 @@ import net.eithon.library.extensions.EithonPlayer;
 import net.eithon.library.extensions.EithonPlugin;
 import net.eithon.library.plugin.CommandParser;
 import net.eithon.library.plugin.ICommandHandler;
+import net.eithon.library.time.TimeMisc;
 import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.command.CommandSender;
@@ -41,10 +42,10 @@ public class CommandHandler implements ICommandHandler {
 		if (!commandParser.hasCorrectNumberOfArgumentsOrShowSyntax(2, 3)) return;
 
 		EithonPlayer player = commandParser.getArgumentEithonPlayer(commandParser.getPlayer());
-		int hours = commandParser.getArgumentInteger(0);
+		long seconds = commandParser.getArgumentTimeAsSeconds(Config.V.bannedFromWorldSeconds);
 
-		hours = this._controller.ban(player, hours);
-		Config.M.playerBannedNow.sendMessage(commandParser.getSender(), player.getName(), hours);
+		seconds = this._controller.ban(player, seconds);
+		Config.M.playerBannedNow.sendMessage(commandParser.getSender(), player.getName(), TimeMisc.secondsToString(seconds));
 	}
 
 

@@ -17,9 +17,9 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 	EithonPlayer _player;
 	private LocalDateTime _bannedToTime;
 
-	public BannedPlayer(EithonPlayer eithonPlayer, int bannedHours) {
+	public BannedPlayer(EithonPlayer eithonPlayer, long bannedSeconds) {
 		this._player = eithonPlayer;
-		this._bannedToTime = LocalDateTime.now().plusHours(bannedHours);
+		this._bannedToTime = LocalDateTime.now().plusSeconds(bannedSeconds);
 	}
 
 	BannedPlayer() {
@@ -45,7 +45,7 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 		json.put("bannedToTime", this._bannedToTime.toString());
 		return json;
 	}
-	
+
 	@Override
 	public BannedPlayer fromJson(Object json) {
 		JSONObject jsonObject = (JSONObject) json;

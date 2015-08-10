@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 1.2 (2015-08-10)
+
+* CHANGE: All time span configuration values are now in the general TimeSpan format instead of hard coded to seconds or minutes or hours.
+
 ### 1.1.2 (2015-07-14)
 
 * BUG: Ban time was shown in days, should be shown in HH:MM:SS format.
