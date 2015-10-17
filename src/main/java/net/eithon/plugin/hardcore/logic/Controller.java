@@ -1,22 +1,18 @@
 package net.eithon.plugin.hardcore.logic;
 
-import java.io.File;
 import java.util.Set;
 import java.util.UUID;
 
 import net.eithon.library.extensions.EithonPlayer;
 import net.eithon.library.extensions.EithonPlugin;
-import net.eithon.library.json.FileContent;
 import net.eithon.library.json.PlayerCollection;
 import net.eithon.library.plugin.Logger.DebugPrintLevel;
 import net.eithon.library.time.TimeMisc;
 import net.eithon.plugin.hardcore.Config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class Controller {
 	private net.eithon.library.json.PlayerCollection<BannedPlayer> _bannedPlayers;
