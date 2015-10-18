@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 1.3 (2015-10-18)
+
+* CHANGE: Refactoring EithonLibrary.
+
 ### 1.2 (2015-08-10)
 
 * CHANGE: All time span configuration values are now in the general TimeSpan format instead of hard coded to seconds or minutes or hours.

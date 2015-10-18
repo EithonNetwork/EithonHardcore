@@ -1,6 +1,6 @@
 name: EithonHardcore
 main: net.eithon.plugin.hardcore.Plugin
-version: 1.2
+version: 1.3
 author: vanbrayne
 description: A Minecraft plugin for hard core world additions
 depend: [EithonLibrary]

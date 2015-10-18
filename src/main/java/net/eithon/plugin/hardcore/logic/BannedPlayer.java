@@ -7,11 +7,11 @@ import java.util.UUID;
 
 import net.eithon.library.core.IUuidAndName;
 import net.eithon.library.extensions.EithonPlayer;
-import net.eithon.library.json.IJson;
+import net.eithon.library.json.JsonObject;
 
 import org.json.simple.JSONObject;
 
-public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAndName
+public class BannedPlayer extends JsonObject<BannedPlayer> implements Serializable, IUuidAndName
 {
 	private static final long serialVersionUID = 1L;
 	EithonPlayer _player;
@@ -44,6 +44,16 @@ public class BannedPlayer implements Serializable, IJson<BannedPlayer>, IUuidAnd
 		json.put("player", this._player.toJson());
 		json.put("bannedToTime", this._bannedToTime.toString());
 		return json;
+	}
+	
+	@Override
+	public JSONObject toJsonObject() {
+		return (JSONObject) toJson();
+	}
+	
+	@Override
+	public String toJsonString() {
+		return toJsonObject().toJSONString();
 	}
 
 	@Override
