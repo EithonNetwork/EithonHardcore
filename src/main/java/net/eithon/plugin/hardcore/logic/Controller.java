@@ -125,13 +125,8 @@ public class Controller {
 		Config.M.stillBanned.sendMessage(sender, bannedPlayer.getName(), TimeMisc.minutesToString(minutesLeft, false));
 	}
 
-
 	private void cleanUpBannedPlayers() {
-		Set<UUID> players = this._bannedPlayers.getPlayers();
-		for (UUID playerId : players) {
-			BannedPlayer bannedPlayer = this._bannedPlayers.get(playerId);
-			if (bannedPlayer.getMinutesLeft() <= 1) this._bannedPlayers.remove(playerId);
-		}
+		this._bannedPlayers.entrySet().removeIf(p-> p.getValue().getMinutesLeft() <= 1 );
 	}
 
 	private void delayedSave() {
