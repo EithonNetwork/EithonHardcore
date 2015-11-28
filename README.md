@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 1.3.1 (2015-11-28)
+
+* BUG: ConcurrentModificationException
+
 ### 1.3 (2015-10-18)
 
 * CHANGE: Refactoring EithonLibrary.
