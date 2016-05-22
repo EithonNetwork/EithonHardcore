@@ -4,9 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
-### 1.3.1 (2015-11-28)
+### 2.0 (2016-05-22)
 
-* BUG: ConcurrentModificationException
+* CHANGE: Now assumes that the entire server is Hardcore.
+* CHANGE: Now depends on EithonBungee for banning player that has died.
 
 ### 1.3 (2015-10-18)
 

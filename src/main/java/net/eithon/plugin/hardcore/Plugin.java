@@ -1,7 +1,6 @@
 package net.eithon.plugin.hardcore;
 
 import net.eithon.library.extensions.EithonPlugin;
-import net.eithon.plugin.hardcore.logic.Controller;
 
 import org.bukkit.event.Listener;
 
@@ -13,9 +12,8 @@ public final class Plugin extends EithonPlugin {
 		super.onEnable();
 		Config.load(this);
 		this._controller = new Controller(this);
-		CommandHandler commandHandler = new CommandHandler(this, this._controller);
 		Listener eventListener = new EventListener(this, this._controller);
-		super.activate(commandHandler, eventListener);
+		super.activate(eventListener);
 	}
 
 	@Override

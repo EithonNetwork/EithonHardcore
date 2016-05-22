@@ -1,9 +1,6 @@
 #
-# The name of the hardcore world
-HardcoreWorldName: W_Hardcore
-#
-# The time span that a player is banned when he/she has died in the hardcore world
-bannedFromWorldTimeSpan: 72h
+# The time span that a player is banned when he/she has died
+bannedFromServerTimeSpan: 72h
 
 eithon:
   UseMarkUpForMessages: 0
@@ -19,10 +16,6 @@ eithon:
   DebugLevel: 1
 
 commands:
-
-  #
-  # Parameters: -
-  TeleportToSpawn: spawn
 
 messages:
 

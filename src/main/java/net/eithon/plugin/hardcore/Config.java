@@ -15,41 +15,24 @@ public class Config {
 
 	}
 	public static class V {
-		public static String hardCoreWorldName;
-		public static long bannedFromWorldSeconds;
+		public static long bannedFromServerSeconds;
 
 		static void load(Configuration config) {
-			hardCoreWorldName = config.getString("HardcoreWorldName", "");	
-			bannedFromWorldSeconds = config.getSeconds("BannedFromWorldTimeSpan", "72h");
+			bannedFromServerSeconds = config.getSeconds("BannedFromServerTimeSpan", "72h");
 		}
 
 	}
 	public static class C {
-		public static ConfigurableCommand spawnCommand;
-
 		static void load(Configuration config) {
-			spawnCommand = config.getConfigurableCommand("commands.TeleportToSpawn", 1,"/spawn");
 		}
 
 	}
 	public static class M {
-		public static ConfigurableMessage playerBannedNow;	
-		public static ConfigurableMessage playerUnbannedNow;	
-		public static ConfigurableMessage playerIsNotBanned;
 		public static ConfigurableMessage bannedUntilMessage;
-		public static ConfigurableMessage stillBanned;
 
 		static void load(Configuration config) {
-			playerBannedNow = config.getConfigurableMessage("PlayerBannedNow", 2,
-					"Player %s has now been banned from the hardcore world for %s.");
-			playerUnbannedNow = config.getConfigurableMessage("PlayerUnbannedNow", 1,
-					"Player %s has been unbanned from the hardcore world.");
-			playerIsNotBanned = config.getConfigurableMessage("PlayerIsNotBanned", 1,
-					"Player %s is not banned in the hardcore world.");
 			bannedUntilMessage = config.getConfigurableMessage("messages.BannedUntil", 1,
 					"Due to dying in the hardcore world, you have now been banned from this world for %s.");
-			stillBanned = config.getConfigurableMessage("messages.StillBanned", 2,
-					"Player %s is banned %s.");
 		}		
 	}
 
