@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 2.1 (2016-06-30)
+
+* CHANGE: Minecraft 1.10
+
 ### 2.0 (2016-05-22)
 
 * CHANGE: Now assumes that the entire server is Hardcore.
