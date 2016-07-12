@@ -23,10 +23,10 @@ public class Controller {
 				&& plugin.isEnabled()
 				&& (plugin instanceof EithonPlugin)) {
 			this._eithonBungeePlugin = (EithonBungeePlugin) plugin;
-			eithonPlugin.getEithonLogger().info("Succesfully hooked into the EithonBungee plugin!");
+			eithonPlugin.logInfo("Succesfully hooked into the EithonBungee plugin!");
 		} else {
 			this._eithonBungeePlugin = null;
-			eithonPlugin.getEithonLogger().warning("EithonHardcore works better with the EithonBungee plugin");			
+			eithonPlugin.logWarn("EithonHardcore works better with the EithonBungee plugin");			
 		}
 	}
 
@@ -39,10 +39,10 @@ public class Controller {
 
 	public long ban(Player player, long seconds) {
 		if (this._eithonBungeePlugin == null) {
-			this._eithonPlugin.getEithonLogger().warning("EithonHardcore can't ban players without the EithonBungee plugin");
+			this._eithonPlugin.logWarn("EithonHardcore can't ban players without the EithonBungee plugin");
 			return 0;
 		} 
-		this._eithonPlugin.getEithonLogger().info("Banning player %s, %s", player, TimeMisc.secondsToString(seconds));
+		this._eithonPlugin.logInfo("Banning player %s, %s", player, TimeMisc.secondsToString(seconds));
 		this._eithonBungeePlugin.getApi().banPlayerOnThisServer(player, seconds);
 		return seconds;
 	}

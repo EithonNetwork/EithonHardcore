@@ -1,7 +1,6 @@
 package net.eithon.plugin.hardcore;
 
 import net.eithon.library.extensions.EithonPlugin;
-import net.eithon.library.plugin.ConfigurableCommand;
 import net.eithon.library.plugin.ConfigurableMessage;
 import net.eithon.library.plugin.Configuration;
 
