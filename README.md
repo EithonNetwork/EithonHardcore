@@ -4,6 +4,10 @@ A Hardcore plugin for Minecraft.
 
 ## Release history
 
+### 2.2 (2016-12-29)
+
+* CHANGE: Bukkit 1.11.
+
 ### 2.1 (2016-06-30)
 
 * CHANGE: Minecraft 1.10
